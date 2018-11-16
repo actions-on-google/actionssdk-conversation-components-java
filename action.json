@@ -14,7 +14,7 @@
   "conversations": {
     "main": {
       "name": "main",
-      "url": "YOUR ENDPOINT URL",
+      "url": "https://example.com",
       "fulfillmentApiVersion": 2
     }
   },

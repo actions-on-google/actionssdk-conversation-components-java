@@ -44,7 +44,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.CompletableFuture;
 
 public class ConversationComponentsApp extends ActionsSdkApp {
 
@@ -80,12 +79,12 @@ public class ConversationComponentsApp extends ActionsSdkApp {
       "Table Card"};
 
   @ForIntent("actions.intent.MAIN")
-  public CompletableFuture<ActionResponse> main(ActionRequest request) {
+  public ActionResponse main(ActionRequest request) {
     return welcome(request);
   }
 
   @ForIntent("actions.intent.TEXT")
-  public CompletableFuture<ActionResponse> text(ActionRequest request) {
+  public ActionResponse text(ActionRequest request) {
     String rawText = request.getRawInput().getQuery().toLowerCase();
     System.out.println("TEXT intent: user said - " + rawText);
 
@@ -114,22 +113,20 @@ public class ConversationComponentsApp extends ActionsSdkApp {
   }
 
   @ForIntent("actions.intent.OPTION")
-  public CompletableFuture<ActionResponse> itemSelected(
-      ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  public ActionResponse itemSelected(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     String selectedItem = request.getSelectedOption();
     responseBuilder
         .add(getMsg(rb, "item_selected", selectedItem))
         .addSuggestions(SUGGESTIONS);
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
   @ForIntent("actions.intent.MEDIA_STATUS")
-  public CompletableFuture<ActionResponse> handleMediaStatusEvent(
-      ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  public ActionResponse handleMediaStatusEvent(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     String status = request.getMediaStatus();
@@ -140,11 +137,11 @@ public class ConversationComponentsApp extends ActionsSdkApp {
         .add(getMsg(rb, "media_status_received", status))
         .addSuggestions(SUGGESTIONS);
 
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> welcome(ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse welcome(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     responseBuilder
@@ -156,28 +153,27 @@ public class ConversationComponentsApp extends ActionsSdkApp {
             .setDisplayText(rb.getString("welcome_more_2")))
         .addSuggestions(SUGGESTIONS);
 
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> normalAsk(ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse normalAsk(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     ActionResponse response = responseBuilder
         .add(rb.getString("normal_ask_text"))
         .build();
-    return CompletableFuture.completedFuture(response);
+    return response;
   }
 
-  private CompletableFuture<ActionResponse> basicCard(ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse basicCard(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
-      return CompletableFuture.completedFuture(
-          responseBuilder
-              .add(rb.getString("msg_no_screen"))
-              .build());
+      return responseBuilder
+          .add(rb.getString("msg_no_screen"))
+          .build();
     }
 
     Button learnMoreButton = new Button()
@@ -200,17 +196,15 @@ public class ConversationComponentsApp extends ActionsSdkApp {
             .setButtons(buttons))
         .addSuggestions(SUGGESTIONS);
 
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> selectionList(
-      ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse selectionList(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
-      return CompletableFuture.completedFuture(
-          responseBuilder.add(rb.getString("msg_no_screen")).build());
+      return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
 
     List<ListSelectListItem> items = new ArrayList<>();
@@ -235,17 +229,15 @@ public class ConversationComponentsApp extends ActionsSdkApp {
             .setItems(items))
         .addSuggestions(SUGGESTIONS);
 
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> selectionCaorusel(
-      ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse selectionCaorusel(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
-      return CompletableFuture.completedFuture(
-          responseBuilder.add(rb.getString("msg_no_screen")).build());
+      return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
 
     List<CarouselSelectCarouselItem> items = new ArrayList<>();
@@ -267,17 +259,15 @@ public class ConversationComponentsApp extends ActionsSdkApp {
         .addSuggestions(SUGGESTIONS)
         .add(new SelectionCarousel().setItems(items));
 
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> browseCarousel(
-      ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse browseCarousel(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
-      return CompletableFuture.completedFuture(
-          responseBuilder.add(rb.getString("msg_no_screen")).build());
+      return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
 
     String url = "https://www.google.com";
@@ -300,17 +290,15 @@ public class ConversationComponentsApp extends ActionsSdkApp {
         .addSuggestions(SUGGESTIONS)
         .add(new CarouselBrowse().setItems(items));
 
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> mediaResponse(
-      ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse mediaResponse(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     if (!request.hasCapability(Capability.MEDIA_RESPONSE_AUDIO.getValue())) {
-      return CompletableFuture.completedFuture(
-          responseBuilder.add(rb.getString("msg_no_screen")).build());
+      return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
 
     List<MediaObject> mediaObjects = new ArrayList<>();
@@ -327,17 +315,15 @@ public class ConversationComponentsApp extends ActionsSdkApp {
         .add(new MediaResponse()
             .setMediaObjects(mediaObjects)
             .setMediaType("AUDIO"));
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> tableCard(
-      ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse tableCard(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
-      return CompletableFuture.completedFuture(
-          responseBuilder.add(rb.getString("msg_no_screen")).build());
+      return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
 
     List<TableCardColumnProperties> columnProperties = new ArrayList<>();
@@ -369,21 +355,21 @@ public class ConversationComponentsApp extends ActionsSdkApp {
         .add(rb.getString("table_response"))
         .add(table)
         .addSuggestions(SUGGESTIONS);
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> normalBye(ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse normalBye(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     responseBuilder
         .add(rb.getString("bye_display_text"))
         .endConversation();
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
-  private CompletableFuture<ActionResponse> byeResponse(ActionRequest request) {
-    ResponseBuilder responseBuilder = getResponseBuilder();
+  private ActionResponse byeResponse(ActionRequest request) {
+    ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle.getBundle("resources",
         request.getLocale());
     responseBuilder
@@ -391,7 +377,7 @@ public class ConversationComponentsApp extends ActionsSdkApp {
             .setDisplayText(rb.getString("bye_display_text"))
             .setTextToSpeech(rb.getString("bye_tts")))
         .endConversation();
-    return CompletableFuture.completedFuture(responseBuilder.build());
+    return responseBuilder.build();
   }
 
   private String getMsg(ResourceBundle rb, String key, Object... args) {

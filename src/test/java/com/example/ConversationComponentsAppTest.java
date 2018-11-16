@@ -29,7 +29,7 @@ public class ConversationComponentsAppTest {
 
   private static String fromFile(String fileName) throws IOException {
     Path absolutePath = Paths.get("src", "test", "resources",
-            fileName);
+        fileName);
     return new String(Files.readAllBytes(absolutePath));
   }
 
@@ -39,7 +39,7 @@ public class ConversationComponentsAppTest {
     String requestBody = fromFile("request_welcome.json");
 
     CompletableFuture<String> future = app.handleRequest(requestBody,
-            null /* headers */);
+        null /* headers */);
 
     String responseJson = future.get();
     System.out.println("Actions response = " + responseJson);

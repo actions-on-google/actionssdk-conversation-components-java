@@ -20,32 +20,27 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.actions.api.App;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.io.*;
 
 /**
  * Handles request received via AWS - API Gateway [proxy integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html)
  * and delegates to your Actions App.
  */
 public class ActionsAWSHandler implements RequestStreamHandler {
-
   // Replace this with your webhook.
   private final App actionsApp = new ConversationComponentsApp();
   private final JSONParser parser = new JSONParser();
 
   @Override
   public void handleRequest(InputStream inputStream,
-      OutputStream outputStream,
-      Context context) throws IOException {
+                            OutputStream outputStream,
+                            Context context) throws IOException {
     BufferedReader reader = new BufferedReader(
-        new InputStreamReader(inputStream));
+            new InputStreamReader(inputStream));
     JSONObject awsResponse = new JSONObject();
     LambdaLogger logger = context.getLogger();
     try {
@@ -55,17 +50,17 @@ public class ActionsAWSHandler implements RequestStreamHandler {
       logger.log("AWS request body = " + body);
 
       actionsApp.handleRequest(body, headers)
-          .thenAccept((webhookResponseJson) -> {
-            logger.log("Generated json = " + webhookResponseJson);
+              .thenAccept((webhookResponseJson) -> {
+                logger.log("Generated json = " + webhookResponseJson);
 
-            JSONObject responseHeaders = new JSONObject();
-            responseHeaders.put("Content-Type", "application/json");
+                JSONObject responseHeaders = new JSONObject();
+                responseHeaders.put("Content-Type", "application/json");
 
-            awsResponse.put("statusCode", "200");
-            awsResponse.put("headers", responseHeaders);
-            awsResponse.put("body", webhookResponseJson);
-            writeResponse(outputStream, awsResponse);
-          }).exceptionally((throwable -> {
+                awsResponse.put("statusCode", "200");
+                awsResponse.put("headers", responseHeaders);
+                awsResponse.put("body", webhookResponseJson);
+                writeResponse(outputStream, awsResponse);
+              }).exceptionally((throwable -> {
         awsResponse.put("statusCode", "500");
         awsResponse.put("exception", throwable);
         writeResponse(outputStream, awsResponse);

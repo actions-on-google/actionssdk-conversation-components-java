@@ -1,4 +1,4 @@
-# Actions on Google: Java client library boilerplate
+# Actions on Google: Actions SDK Conversation Components
 
 Sample that demonstrates conversation components using Actions SDK.
 
