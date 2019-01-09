@@ -16,20 +16,17 @@
 
 package com.example;
 
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
-
+import org.junit.Test;
 
 public class ConversationComponentsAppTest {
 
   private static String fromFile(String fileName) throws IOException {
-    Path absolutePath = Paths.get("src", "test", "resources",
-        fileName);
+    Path absolutePath = Paths.get("src", "test", "resources", fileName);
     return new String(Files.readAllBytes(absolutePath));
   }
 
@@ -38,8 +35,8 @@ public class ConversationComponentsAppTest {
     ConversationComponentsApp app = new ConversationComponentsApp();
     String requestBody = fromFile("request_welcome.json");
 
-    CompletableFuture<String> future = app.handleRequest(requestBody,
-        null /* headers */);
+    CompletableFuture<String> future = app
+        .handleRequest(requestBody, null /* headers */);
 
     String responseJson = future.get();
     System.out.println("Actions response = " + responseJson);

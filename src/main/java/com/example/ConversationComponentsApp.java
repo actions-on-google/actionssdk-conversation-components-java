@@ -50,33 +50,29 @@ public class ConversationComponentsApp extends ActionsSdkApp {
   // Note: Do not store any state as an instance variable.
   // It is ok to have final variables where the variable is assigned a value in
   // the constructor but remains unchanged. This is required to ensure thread-
-  // safety as the entry point (ActionServlet/ActionsAWSHandler) instances may
+  // safety as the entry point (ActionServlet) instances may
   // be reused by the server.
 
   private static final String IMG_URL_AOG =
-      "https://developers.google.com/actions/images/badges" +
-          "/XPM_BADGING_GoogleAssistant_VER.png";
+      "https://developers.google.com/actions/images/badges"
+          + "/XPM_BADGING_GoogleAssistant_VER.png";
   private static final String IMG_URL_GOOGLE_HOME =
-      "https://lh3.googleusercontent.com/Nu3a6F80WfixUqf_ec_vgXy_" +
-          "c0-0r4VLJRXjVFF_X_CIilEu8B9fT35qyTEj_PEsKw";
+      "https://lh3.googleusercontent.com/Nu3a6F80WfixUqf_ec_vgXy_"
+          + "c0-0r4VLJRXjVFF_X_CIilEu8B9fT35qyTEj_PEsKw";
   private static final String IMG_URL_GOOGLE_PIXEL =
-      "https://storage.googleapis.com/madebygoog/v1" +
-          "/Pixel/Pixel_ColorPicker/Pixel_Device_Angled_Black-720w.png";
+      "https://storage.googleapis.com/madebygoog/v1"
+          + "/Pixel/Pixel_ColorPicker/Pixel_Device_Angled_Black-720w.png";
   private static final String IMG_URL_MEDIA =
       "http://storage.googleapis.com/automotive-media/album_art.jpg";
   private static final String MEDIA_SOURCE =
       "http://storage.googleapis.com/automotive-media/Jazz_In_Paris.mp3";
 
-  private static final String[] IMAGES = new String[]{
-      IMG_URL_AOG, IMG_URL_GOOGLE_HOME, IMG_URL_GOOGLE_PIXEL};
+  private static final String[] IMAGES =
+      new String[]{IMG_URL_AOG, IMG_URL_GOOGLE_HOME, IMG_URL_GOOGLE_PIXEL};
 
-  private static final String[] SUGGESTIONS = new String[]{
-      "Basic Card",
-      "Browse Carousel",
-      "Carousel",
-      "List",
-      "Media",
-      "Table Card"};
+  private static final String[] SUGGESTIONS =
+      new String[]{"Basic Card", "Browse Carousel", "Carousel", "List", "Media",
+          "Table Card"};
 
   @ForIntent("actions.intent.MAIN")
   public ActionResponse main(ActionRequest request) {
@@ -115,11 +111,10 @@ public class ConversationComponentsApp extends ActionsSdkApp {
   @ForIntent("actions.intent.OPTION")
   public ActionResponse itemSelected(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     String selectedItem = request.getSelectedOption();
-    responseBuilder
-        .add(getMsg(rb, "item_selected", selectedItem))
+    responseBuilder.add(getMsg(rb, "item_selected", selectedItem))
         .addSuggestions(SUGGESTIONS);
     return responseBuilder.build();
   }
@@ -127,14 +122,13 @@ public class ConversationComponentsApp extends ActionsSdkApp {
   @ForIntent("actions.intent.MEDIA_STATUS")
   public ActionResponse handleMediaStatusEvent(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     String status = request.getMediaStatus();
     if (status == null) {
       status = "Unknown";
     }
-    responseBuilder
-        .add(getMsg(rb, "media_status_received", status))
+    responseBuilder.add(getMsg(rb, "media_status_received", status))
         .addSuggestions(SUGGESTIONS);
 
     return responseBuilder.build();
@@ -142,15 +136,17 @@ public class ConversationComponentsApp extends ActionsSdkApp {
 
   private ActionResponse welcome(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     responseBuilder
-        .add(new SimpleResponse()
-            .setDisplayText(rb.getString("welcome_msg_1"))
-            .setTextToSpeech(rb.getString("welcome_msg_2")))
-        .add(new SimpleResponse()
-            .setTextToSpeech(rb.getString("welcome_more_1"))
-            .setDisplayText(rb.getString("welcome_more_2")))
+        .add(
+            new SimpleResponse()
+                .setDisplayText(rb.getString("welcome_msg_1"))
+                .setTextToSpeech(rb.getString("welcome_msg_2")))
+        .add(
+            new SimpleResponse()
+                .setTextToSpeech(rb.getString("welcome_more_1"))
+                .setDisplayText(rb.getString("welcome_more_2")))
         .addSuggestions(SUGGESTIONS);
 
     return responseBuilder.build();
@@ -158,42 +154,42 @@ public class ConversationComponentsApp extends ActionsSdkApp {
 
   private ActionResponse normalAsk(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     ActionResponse response = responseBuilder
-        .add(rb.getString("normal_ask_text"))
-        .build();
+        .add(rb.getString("normal_ask_text")).build();
     return response;
   }
 
   private ActionResponse basicCard(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
-      return responseBuilder
-          .add(rb.getString("msg_no_screen"))
-          .build();
+      return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
 
-    Button learnMoreButton = new Button()
-        .setTitle(rb.getString("basic_card_button_text"))
-        .setOpenUrlAction(new OpenUrlAction()
-            .setUrl("https://assistant.google.com"));
+    Button learnMoreButton =
+        new Button()
+            .setTitle(rb.getString("basic_card_button_text"))
+            .setOpenUrlAction(
+                new OpenUrlAction().setUrl("https://assistant.google.com"));
     List<Button> buttons = new ArrayList<>();
     buttons.add(learnMoreButton);
     String text = rb.getString("basic_card_text");
     responseBuilder
         .add(rb.getString("basic_card_response"))
-        .add(new BasicCard()
-            .setTitle(rb.getString("basic_card_title"))
-            .setSubtitle(rb.getString("basic_card_sub_title"))
-            .setFormattedText(text)
-            .setImage(new Image()
-                .setUrl(IMG_URL_AOG)
-                .setAccessibilityText(
-                    rb.getString("basic_card_alt_text")))
-            .setButtons(buttons))
+        .add(
+            new BasicCard()
+                .setTitle(rb.getString("basic_card_title"))
+                .setSubtitle(rb.getString("basic_card_sub_title"))
+                .setFormattedText(text)
+                .setImage(
+                    new Image()
+                        .setUrl(IMG_URL_AOG)
+                        .setAccessibilityText(
+                            rb.getString("basic_card_alt_text")))
+                .setButtons(buttons))
         .addSuggestions(SUGGESTIONS);
 
     return responseBuilder.build();
@@ -201,8 +197,8 @@ public class ConversationComponentsApp extends ActionsSdkApp {
 
   private ActionResponse selectionList(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
       return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
@@ -213,19 +209,17 @@ public class ConversationComponentsApp extends ActionsSdkApp {
       item = new ListSelectListItem();
       item.setTitle(getMsg(rb, "list_item_title", i + 1))
           .setDescription(getMsg(rb, "list_item_desc", i + 1))
-          .setImage(new Image()
-              .setUrl(IMAGES[i])
-              .setAccessibilityText(
-                  rb.getString("list_image_alt_text")))
-          .setOptionInfo(new OptionInfo()
-              .setKey(String.valueOf(i + 1)));
+          .setImage(
+              new Image()
+                  .setUrl(IMAGES[i])
+                  .setAccessibilityText(rb.getString("list_image_alt_text")))
+          .setOptionInfo(new OptionInfo().setKey(String.valueOf(i + 1)));
       items.add(item);
     }
 
     responseBuilder
         .add(rb.getString("list_response_title"))
-        .add(new SelectionList()
-            .setTitle(rb.getString("list_title"))
+        .add(new SelectionList().setTitle(rb.getString("list_title"))
             .setItems(items))
         .addSuggestions(SUGGESTIONS);
 
@@ -234,8 +228,8 @@ public class ConversationComponentsApp extends ActionsSdkApp {
 
   private ActionResponse selectionCaorusel(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
       return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
@@ -246,11 +240,11 @@ public class ConversationComponentsApp extends ActionsSdkApp {
       item = new CarouselSelectCarouselItem();
       item.setTitle(getMsg(rb, "list_item_title", i + 1))
           .setDescription(getMsg(rb, "list_item_desc", i + 1))
-          .setImage(new Image()
-              .setUrl(IMAGES[i])
-              .setAccessibilityText(rb.getString("list_image_alt_text")))
-          .setOptionInfo(new OptionInfo()
-              .setKey(String.valueOf(i + 1)));
+          .setImage(
+              new Image()
+                  .setUrl(IMAGES[i])
+                  .setAccessibilityText(rb.getString("list_image_alt_text")))
+          .setOptionInfo(new OptionInfo().setKey(String.valueOf(i + 1)));
       items.add(item);
     }
 
@@ -264,8 +258,8 @@ public class ConversationComponentsApp extends ActionsSdkApp {
 
   private ActionResponse browseCarousel(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
       return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
@@ -279,8 +273,9 @@ public class ConversationComponentsApp extends ActionsSdkApp {
       item.setTitle(getMsg(rb, "list_item_title", i + 1));
       item.setDescription(getMsg(rb, "list_item_desc", i + 1));
       item.setOpenUrlAction(new OpenUrlAction().setUrl(url));
-      item.setImage(new Image().setUrl(IMAGES[i])
-          .setAccessibilityText(rb.getString("list_image_alt_text")));
+      item.setImage(
+          new Image().setUrl(IMAGES[i])
+              .setAccessibilityText(rb.getString("list_image_alt_text")));
       item.setFooter(getMsg(rb, "list_item_footer", i + 1));
       items.add(item);
     }
@@ -295,33 +290,35 @@ public class ConversationComponentsApp extends ActionsSdkApp {
 
   private ActionResponse mediaResponse(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     if (!request.hasCapability(Capability.MEDIA_RESPONSE_AUDIO.getValue())) {
       return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
 
     List<MediaObject> mediaObjects = new ArrayList<>();
-    mediaObjects.add(new MediaObject()
-        .setName(rb.getString("media_name"))
-        .setDescription(rb.getString("media_desc"))
-        .setContentUrl(MEDIA_SOURCE)
-        .setIcon(new Image()
-            .setUrl(IMG_URL_MEDIA)
-            .setAccessibilityText(rb.getString("media_image_alt_text"))));
+    mediaObjects.add(
+        new MediaObject()
+            .setName(rb.getString("media_name"))
+            .setDescription(rb.getString("media_desc"))
+            .setContentUrl(MEDIA_SOURCE)
+            .setIcon(
+                new Image()
+                    .setUrl(IMG_URL_MEDIA)
+                    .setAccessibilityText(
+                        rb.getString("media_image_alt_text"))));
     responseBuilder
         .add(rb.getString("media_response"))
         .addSuggestions(SUGGESTIONS)
-        .add(new MediaResponse()
-            .setMediaObjects(mediaObjects)
+        .add(new MediaResponse().setMediaObjects(mediaObjects)
             .setMediaType("AUDIO"));
     return responseBuilder.build();
   }
 
   private ActionResponse tableCard(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     if (!request.hasCapability(Capability.SCREEN_OUTPUT.getValue())) {
       return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
@@ -329,8 +326,8 @@ public class ConversationComponentsApp extends ActionsSdkApp {
     List<TableCardColumnProperties> columnProperties = new ArrayList<>();
 
     for (int i = 0; i < 3; i++) {
-      columnProperties
-          .add(new TableCardColumnProperties()
+      columnProperties.add(
+          new TableCardColumnProperties()
               .setHeader(getMsg(rb, "table_col_title", i + 1)));
     }
 
@@ -338,44 +335,41 @@ public class ConversationComponentsApp extends ActionsSdkApp {
     for (int i = 0; i < 4; i++) {
       List<TableCardCell> cells = new ArrayList<>();
       for (int j = 0; j < 3; j++) {
-        cells.add(
-            new TableCardCell()
-                .setText(getMsg(rb, "table_cell_value", (i + 1))));
+        cells.add(new TableCardCell()
+            .setText(getMsg(rb, "table_cell_value", (i + 1))));
       }
       rows.add(new TableCardRow().setCells(cells));
     }
 
-    TableCard table = new TableCard()
-        .setTitle(rb.getString("table_title"))
-        .setSubtitle(rb.getString("table_subtitle"))
-        .setColumnProperties(columnProperties)
-        .setRows(rows);
+    TableCard table =
+        new TableCard()
+            .setTitle(rb.getString("table_title"))
+            .setSubtitle(rb.getString("table_subtitle"))
+            .setColumnProperties(columnProperties)
+            .setRows(rows);
 
-    responseBuilder
-        .add(rb.getString("table_response"))
-        .add(table)
+    responseBuilder.add(rb.getString("table_response")).add(table)
         .addSuggestions(SUGGESTIONS);
     return responseBuilder.build();
   }
 
   private ActionResponse normalBye(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
-    responseBuilder
-        .add(rb.getString("bye_display_text"))
-        .endConversation();
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
+    responseBuilder.add(rb.getString("bye_display_text")).endConversation();
     return responseBuilder.build();
   }
 
   private ActionResponse byeResponse(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
-    ResourceBundle rb = ResourceBundle.getBundle("resources",
-        request.getLocale());
+    ResourceBundle rb = ResourceBundle
+        .getBundle("resources", request.getLocale());
     responseBuilder
-        .add(new SimpleResponse()
-            .setDisplayText(rb.getString("bye_display_text"))
-            .setTextToSpeech(rb.getString("bye_tts")))
+        .add(
+            new SimpleResponse()
+                .setDisplayText(rb.getString("bye_display_text"))
+                .setTextToSpeech(rb.getString("bye_tts")))
         .endConversation();
     return responseBuilder.build();
   }
