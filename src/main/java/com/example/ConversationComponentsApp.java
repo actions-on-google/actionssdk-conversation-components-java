@@ -53,26 +53,18 @@ public class ConversationComponentsApp extends ActionsSdkApp {
   // safety as the entry point (ActionServlet) instances may
   // be reused by the server.
 
-  private static final String IMG_URL_AOG =
-      "https://developers.google.com/actions/images/badges"
-          + "/XPM_BADGING_GoogleAssistant_VER.png";
-  private static final String IMG_URL_GOOGLE_HOME =
-      "https://lh3.googleusercontent.com/Nu3a6F80WfixUqf_ec_vgXy_"
-          + "c0-0r4VLJRXjVFF_X_CIilEu8B9fT35qyTEj_PEsKw";
-  private static final String IMG_URL_GOOGLE_PIXEL =
-      "https://storage.googleapis.com/madebygoog/v1"
-          + "/Pixel/Pixel_ColorPicker/Pixel_Device_Angled_Black-720w.png";
-  private static final String IMG_URL_MEDIA =
-      "http://storage.googleapis.com/automotive-media/album_art.jpg";
-  private static final String MEDIA_SOURCE =
-      "http://storage.googleapis.com/automotive-media/Jazz_In_Paris.mp3";
+  private static final String IMG_URL_AOG = "https://storage.googleapis.com/actionsresources/logo_assistant_2x_64dp.png";
+  private static final String IMG_URL_GOOGLE_PAY = "https://storage.googleapis.com/actionsresources/logo_pay_64dp.png";
+  private static final String IMG_URL_GOOGLE_HOME = "https://lh3.googleusercontent.com/Nu3a6F80WfixUqf_ec_vgXy_c0-0r4VLJRXjVFF_X_CIilEu8B9fT35qyTEj_PEsKw";
+  private static final String IMG_URL_GOOGLE_PIXEL = "https://storage.googleapis.com/madebygoog/v1/Pixel/Pixel_ColorPicker/Pixel_Device_Angled_Black-720w.png";
+  private static final String IMG_URL_MEDIA = "http://storage.googleapis.com/automotive-media/album_art.jpg";
+  private static final String MEDIA_SOURCE = "http://storage.googleapis.com/automotive-media/Jazz_In_Paris.mp3";
 
   private static final String[] IMAGES =
-      new String[]{IMG_URL_AOG, IMG_URL_GOOGLE_HOME, IMG_URL_GOOGLE_PIXEL};
+      new String[]{IMG_URL_AOG, IMG_URL_GOOGLE_PAY, IMG_URL_GOOGLE_HOME, IMG_URL_GOOGLE_PIXEL};
 
   private static final String[] SUGGESTIONS =
-      new String[]{"Basic Card", "Browse Carousel", "Carousel", "List", "Media",
-          "Table Card"};
+      new String[]{"Basic Card", "Browse Carousel", "Carousel", "List", "Media", "Table Card"};
 
   @ForIntent("actions.intent.MAIN")
   public ActionResponse main(ActionRequest request) {
@@ -90,7 +82,7 @@ public class ConversationComponentsApp extends ActionsSdkApp {
       case "list":
         return selectionList(request);
       case "carousel":
-        return selectionCaorusel(request);
+        return selectionCarousel(request);
       case "browse carousel":
         return browseCarousel(request);
       case "normal ask":
@@ -205,7 +197,7 @@ public class ConversationComponentsApp extends ActionsSdkApp {
 
     List<ListSelectListItem> items = new ArrayList<>();
     ListSelectListItem item;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       item = new ListSelectListItem();
       item.setTitle(getMsg(rb, "list_item_title", i + 1))
           .setDescription(getMsg(rb, "list_item_desc", i + 1))
@@ -226,7 +218,7 @@ public class ConversationComponentsApp extends ActionsSdkApp {
     return responseBuilder.build();
   }
 
-  private ActionResponse selectionCaorusel(ActionRequest request) {
+  private ActionResponse selectionCarousel(ActionRequest request) {
     ResponseBuilder responseBuilder = getResponseBuilder(request);
     ResourceBundle rb = ResourceBundle
         .getBundle("resources", request.getLocale());
@@ -236,7 +228,7 @@ public class ConversationComponentsApp extends ActionsSdkApp {
 
     List<CarouselSelectCarouselItem> items = new ArrayList<>();
     CarouselSelectCarouselItem item;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       item = new CarouselSelectCarouselItem();
       item.setTitle(getMsg(rb, "list_item_title", i + 1))
           .setDescription(getMsg(rb, "list_item_desc", i + 1))
@@ -264,11 +256,18 @@ public class ConversationComponentsApp extends ActionsSdkApp {
       return responseBuilder.add(rb.getString("msg_no_screen")).build();
     }
 
+    if (!request.hasCapability(Capability.WEB_BROWSER.getValue())) {
+      responseBuilder
+              .add(rb.getString("msg_no_browser"))
+              .addSuggestions(SUGGESTIONS);
+      return responseBuilder.build();
+    }
+
     String url = "https://www.google.com";
 
     List<CarouselBrowseItem> items = new ArrayList<>();
     CarouselBrowseItem item;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       item = new CarouselBrowseItem();
       item.setTitle(getMsg(rb, "list_item_title", i + 1));
       item.setDescription(getMsg(rb, "list_item_desc", i + 1));
@@ -293,7 +292,7 @@ public class ConversationComponentsApp extends ActionsSdkApp {
     ResourceBundle rb = ResourceBundle
         .getBundle("resources", request.getLocale());
     if (!request.hasCapability(Capability.MEDIA_RESPONSE_AUDIO.getValue())) {
-      return responseBuilder.add(rb.getString("msg_no_screen")).build();
+      return responseBuilder.add(rb.getString("msg_no_media")).build();
     }
 
     List<MediaObject> mediaObjects = new ArrayList<>();
@@ -324,12 +323,9 @@ public class ConversationComponentsApp extends ActionsSdkApp {
     }
 
     List<TableCardColumnProperties> columnProperties = new ArrayList<>();
-
-    for (int i = 0; i < 3; i++) {
-      columnProperties.add(
-          new TableCardColumnProperties()
-              .setHeader(getMsg(rb, "table_col_title", i + 1)));
-    }
+    columnProperties.add(new TableCardColumnProperties().setHeader(rb.getString("table_col_1")));
+    columnProperties.add(new TableCardColumnProperties().setHeader(rb.getString("table_col_2")));
+    columnProperties.add(new TableCardColumnProperties().setHeader(rb.getString("table_col_3")));
 
     List<TableCardRow> rows = new ArrayList<>();
     for (int i = 0; i < 4; i++) {
