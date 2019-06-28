@@ -15,7 +15,7 @@ the Actions on Google [Java client library](https://github.com/actions-on-google
 
 ### Configuration
 #### Action Console
-1. From the [Actions on Google Console](https://console.actions.google.com/), add a new project (this will become your *Project ID*) > **Create Project**.
+1. From the [Actions on Google Console](https://console.actions.google.com/), New project (this will become your *Project ID*) > **Create project**.
 1. Scroll down > under **More options** select **Actions SDK** > keep **Use Actions SDK to add Actions** modal open
 1. [Install the gactions CLI](https://developers.google.com/actions/tools/gactions-cli) if you haven't already.
 
@@ -29,7 +29,7 @@ the Actions on Google [Java client library](https://github.com/actions-on-google
    + In the **conversations object** > replace the placeholder **URL** values with `https://{YOUR_PROJECT_ID}.appspot.com`
 1. In terminal, run `gactions update --action_package action.json --project ${YOUR_PROJECT_ID}`
 1. Back in the [Actions console](https://console.actions.google.com), from the **Use Actions SDK to add Actions** window > select **OK**.
-1. From the left menu under **Test** > select **Simulator** to open the Actions on Google simulator then say or type `Talk to my test app`.
+1. From the top menu click **Test** to open the Actions on Google simulator then say or type `Talk to my test app`.
 
 ### Running this Sample
 + (Recommended) You can test your Action on any Google Assistant-enabled device on which the Assistant is signed into the same account used to create this project. Just say or type, “OK Google, talk to my test app”.
