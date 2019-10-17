@@ -1,6 +1,6 @@
 # Actions on Google: Actions SDK Conversation Components
 
-This sample demonstrates Actions on Google features for use on Google Assistant including rich responses -- using the [Actions SDK](https://developers.google.com/actions/sdk/),
+This sample demonstrates Actions on Google features for use on Google Assistant including rich responses -- using the [Actions SDK](https://developers.google.com/assistant/actions/actions-sdk/),
 the Actions on Google [Java client library](https://github.com/actions-on-google/actions-on-google-java), and Google Cloud [App Engine](https://cloud.google.com/appengine/docs/standard/java/quickstart).
 
 ## Setup Instructions
@@ -10,14 +10,14 @@ the Actions on Google [Java client library](https://github.com/actions-on-google
     + Run `gcloud auth application-default login` with your Gooogle account
     + Install and update the App Engine component,`gcloud components install app-engine-java`
     + Update other components, `gcloud components update`
-1.  [Install the gactions CLI](https://developers.google.com/actions/tools/gactions-cli)
+1.  [Install the gactions CLI](https://developers.google.com/assistant/tools/gactions-cli)
     + You may need to grant execute permission, ‘chmod +x ./gactions’
 
 ### Configuration
 #### Action Console
 1. From the [Actions on Google Console](https://console.actions.google.com/), New project (this will become your *Project ID*) > **Create project**.
 1. Scroll down > under **More options** select **Actions SDK** > keep **Use Actions SDK to add Actions** modal open
-1. [Install the gactions CLI](https://developers.google.com/actions/tools/gactions-cli) if you haven't already.
+1. [Install the gactions CLI](https://developers.google.com/assistant/tools/gactions-cli) if you haven't already.
 
 #### App Engine Deployment & Webhook Configuration
 1. Configure the gcloud CLI and set your Google Cloud project to the name of your Actions on Google Project ID, which you can find from the [Actions on Google console](https://console.actions.google.com/) under Settings ⚙
@@ -36,10 +36,10 @@ the Actions on Google [Java client library](https://github.com/actions-on-google
 + You can also use the Actions on Google Console simulator to test most features and preview on-device behavior.
 
 ### References & Issues
-+ Questions? Go to [StackOverflow](https://stackoverflow.com/questions/tagged/actions-on-google), [Assistant Developer Community on Reddit](https://www.reddit.com/r/GoogleAssistantDev/) or [Support](https://developers.google.com/actions/support/).
++ Questions? Go to [StackOverflow](https://stackoverflow.com/questions/tagged/actions-on-google), [Assistant Developer Community on Reddit](https://www.reddit.com/r/GoogleAssistantDev/) or [Support](https://developers.google.com/assistant/support).
 + For bugs, please report an issue on Github.
-+ Actions on Google [Documentation](https://developers.google.com/actions/extending-the-assistant).
-+ Getting started with [Actions SDK Guide](https://developers.google.com/actions/sdk/).
++ Actions on Google [Documentation](https://developers.google.com/assistant).
++ Getting started with [Actions SDK Guide](https://developers.google.com/assistant/actions/actions-sdk/).
 + More info about [Gradle & the App Engine Plugin](https://cloud.google.com/appengine/docs/flexible/java/using-gradle).
 + More info about deploying [Java apps with App Engine](https://cloud.google.com/appengine/docs/standard/java/quickstart).
 
