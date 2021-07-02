@@ -1,5 +1,7 @@
 # Actions on Google: Actions SDK Conversation Components
 
+:warning: This code sample was built using the legacy Actions SDK. We now recommend using [Actions Builder or the new Actions SDK](https://developers.google.com/assistant/conversational/overview) to develop, test, and deploy Conversational Actions.
+
 This sample demonstrates Actions on Google features for use on Google Assistant including rich responses -- using the [Actions SDK](https://developers.google.com/assistant/actions/actions-sdk/),
 the Actions on Google [Java client library](https://github.com/actions-on-google/actions-on-google-java), and Google Cloud [App Engine](https://cloud.google.com/appengine/docs/standard/java/quickstart).
 
